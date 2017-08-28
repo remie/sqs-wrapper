@@ -1,0 +1,24 @@
+{
+  "name": "@remie/sqs",
+  "version": "0.0.9",
+  "description": "Wrapper module to simplify working with AWS SQS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remie/sqs-wrapper.git"
+  },
+  "keywords": [
+    "AWS",
+    "SQS",
+    "Wrapper"
+  ],
+  "author": "Remie Bolte <r.bolte@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/remie/sqs-wrapper/issues"
+  },
+  "homepage": "https://github.com/remie/sqs-wrapper#readme"
+}
