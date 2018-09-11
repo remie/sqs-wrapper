@@ -2,3 +2,4 @@ sqs.sublime-project
 sqs.sublime-workspace
 dist
 node_modules
+*.tgz

@@ -201,16 +201,12 @@ export default class SQS {
         QueueUrl: params.QueueUrl || await this.getQueueUrl(name)
       });
 
-      this.sqs.purgeQueue(options).promise().then(() => {
-        callback(null);
-        return Promise.resolve(true);
-      }).catch((err) => {
-        callback(err);
-        return Promise.reject(err);
-      });
+      await this.sqs.purgeQueue(options).promise();
+      callback(null);
+      return true;
     } catch (err) {
       callback(err);
-      return Promise.reject(err);
+      throw err;
     }
   }
 
