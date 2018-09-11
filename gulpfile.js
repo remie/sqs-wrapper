@@ -7,25 +7,13 @@ const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const tslint = require('gulp-tslint');
 const sourcemaps = require('gulp-sourcemaps');
-
 const tsProject = ts.createProject('./tsconfig.json');
 
 // ------------------------------------------------------------------------------------------ Tasks
 
-gulp.task('default', ['build']);
+const clean = () => del(['./dist/**/*']);
 
-gulp.task('build', ['assets', 'compile']);
-
-gulp.task('compile', ['lint'], () => 
-	tsProject.src()
-			 .pipe(sourcemaps.init())
-			 .pipe(tsProject())
-			 .once("error", function () { this.once("finish", () => process.exit(1)); })
-			 .pipe(sourcemaps.write())
-			 .pipe(gulp.dest('./dist'))
-);
-
-gulp.task('lint', ['clean'], () => 
+const lint = () => 	
 	gulp.src(['./src/**/*.ts'])
 		.pipe(tslint({
 			tslint: require('tslint'),
@@ -35,12 +23,18 @@ gulp.task('lint', ['clean'], () =>
 			emitError: true,
 			summarizeFailureOutput: true
 		}))
-		.once("error", function () { this.once("finish", () => process.exit(1)); })
-);
+		.once("error", function () { this.once("finish", () => process.exit(1)); });
 
-gulp.task('assets', ['clean'], () => 
+const assets = () => 
 	gulp.src(['./src/**/*.json'])
-		.pipe(gulp.dest('./dist'))
-);
+		.pipe(gulp.dest('./dist'));
 
-gulp.task('clean', () => del(['./dist/**/*']));
+const compile = () => 
+	tsProject.src()
+			 .pipe(sourcemaps.init())
+			 .pipe(tsProject())
+			 .once("error", function () { this.once("finish", () => process.exit(1)); })
+			 .pipe(sourcemaps.write())
+			 .pipe(gulp.dest('./dist'));
+
+gulp.task('default', gulp.series(clean, lint, assets, compile));
