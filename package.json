@@ -1,10 +1,15 @@
 {
   "name": "@remie/sqs",
-  "version": "0.0.9",
-  "description": "Wrapper module to simplify working with AWS SQS",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Wrapper module to simplify working with AWS SQS, with TypeScript bindings",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=7.10.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./node_modules/.bin/gulp",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,5 +25,18 @@
   "bugs": {
     "url": "https://github.com/remie/sqs-wrapper/issues"
   },
-  "homepage": "https://github.com/remie/sqs-wrapper#readme"
+  "homepage": "https://github.com/remie/sqs-wrapper#readme",
+  "devDependencies": {
+    "@types/node": "^9.4.6",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-tslint": "^8.0.0",
+    "gulp-typescript": "^3.1.6",
+    "tslint": "^5.2.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.197.0"
+  }
 }
