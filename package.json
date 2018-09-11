@@ -1,6 +1,6 @@
 {
   "name": "@remie/sqs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wrapper module to simplify working with AWS SQS, with TypeScript bindings",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
