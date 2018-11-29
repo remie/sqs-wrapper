@@ -8,7 +8,9 @@
     "node": ">=7.10.1"
   },
   "scripts": {
-    "build": "./node_modules/gulp/bin/gulp.js",
+    "clean": "rm -rf dist",
+    "lint": "npx tslint --project tsconfig.json",
+    "build": "npm run clean && npm run lint && npx tsc",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -28,11 +30,6 @@
   "homepage": "https://github.com/remie/sqs-wrapper#readme",
   "devDependencies": {
     "@types/node": "^10.9.4",
-    "del": "^3.0.0",
-    "gulp": "^4.0.0",
-    "gulp-sourcemaps": "^2.6.1",
-    "gulp-tslint": "^8.0.0",
-    "gulp-typescript": "^5.0.0-alpha.3",
     "tslint": "^5.2.0",
     "typescript": "^3.0.3"
   },
