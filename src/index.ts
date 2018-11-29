@@ -339,9 +339,9 @@ export default class SQS {
     }
   }
 
-  pull(name: string, onMessageReceived: (data, callback: (err: Error) => void) => void): void;
-  pull(name: string, params: AWS.SQS.ReceiveMessageRequest, onMessageReceived: (data, callback: (err: Error) => void) => void): void;
-  pull(params: AWS.SQS.ReceiveMessageRequest, onMessageReceived: (data, callback: (err: Error) => void) => void): void;
+  pull(name: string, onMessageReceived: (data, callback: (err?: Error) => void) => void): void;
+  pull(name: string, params: AWS.SQS.ReceiveMessageRequest, onMessageReceived: (data, callback: (err?: Error) => void) => void): void;
+  pull(params: AWS.SQS.ReceiveMessageRequest, onMessageReceived: (data, callback: (err?: Error) => void) => void): void;
   pull(...args): void {
     const parameters = this.getParameters(args);
     const name = parameters.name;
