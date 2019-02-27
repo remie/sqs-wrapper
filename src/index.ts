@@ -10,11 +10,13 @@ export default class SQS {
 
   private sqs: AWS.SQS;
   private sts: AWS.STS;
+  private prefix: string;
 
   // ------------------------------------------------------------------------------------------ Constructor
 
-  constructor(options: AWS.SQS.ClientConfiguration) {
+  constructor(options: AWS.SQS.ClientConfiguration, prefix?: string) {
     options.region = options.region || 'us-east-1';
+    this.prefix = prefix || '';
     this.sqs = new AWS.SQS(options);
     this.sts = new AWS.STS(options);
   }
@@ -83,15 +85,20 @@ export default class SQS {
       const callback = parameters.callback;
 
     try {
+      let QueueName = params.QueueName || name;
+      if (!QueueName.startsWith(this.prefix)) {
+        QueueName = this.prefix + QueueName;
+      }
+
       const options: AWS.SQS.GetQueueUrlRequest = Object.assign({} , params, {
-        QueueName: params.QueueName || name,
+        QueueName,
         QueueOwnerAWSAccountId: params.QueueOwnerAWSAccountId || await this.getQueueOwnerAWSAccountId()
       });
 
       return this.sqs.getQueueUrl(options, (err, result) => {
         if (err) {
           if (err.code === 'AWS.SimpleQueueService.NonExistentQueue') {
-            this.createQueue(options.QueueName).then(queueUrl => callback(null, queueUrl)).catch(error => callback(error));
+            this.createQueue(QueueName).then(queueUrl => callback(null, queueUrl)).catch(error => callback(error));
           } else {
             callback(err);
           }
@@ -102,7 +109,7 @@ export default class SQS {
         return Promise.resolve(result.QueueUrl);
       }).catch(error => {
         if (error.code === 'AWS.SimpleQueueService.NonExistentQueue') {
-          return this.createQueue(options.QueueName);
+          return this.createQueue(QueueName);
         } else {
           return Promise.reject(error);
         }
@@ -126,8 +133,13 @@ export default class SQS {
     const callback = parameters.callback;
 
     try {
+      let QueueName = params.QueueName || name;
+      if (!QueueName.startsWith(this.prefix)) {
+        QueueName = this.prefix + QueueName;
+      }
+
       const options: AWS.SQS.CreateQueueRequest = Object.assign({} , params, {
-        QueueName: params.QueueName || name,
+        QueueName
       });
 
       return this.sqs.createQueue(options).promise().then((response: AWS.SQS.CreateQueueResult) => {
@@ -137,7 +149,7 @@ export default class SQS {
         if (err.code === 'AWS.SimpleQueueService.QueueDeletedRecently') {
           return new Promise<string>((resolve, reject) => {
             setTimeout(() => {
-              this.createQueue(name, options).then((queueUrl: string) => {
+              this.createQueue(QueueName, options).then((queueUrl: string) => {
                 resolve(queueUrl);
               }).catch((err: AWS.AWSError) => {
                 reject(err);

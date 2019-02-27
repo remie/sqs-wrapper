@@ -10,8 +10,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "lint": "npx tslint --project tsconfig.json",
-    "build": "npm run clean && npm run lint && npx tsc",
-    "prepublishOnly": "npm run build"
+    "compile": "npm run clean && npm run lint && npx tsc",
+    "watch": "npx nodemon -w src --exec 'npm run compile' -e ts",
+    "prepublishOnly": "npm run compile"
   },
   "repository": {
     "type": "git",
